@@ -1,93 +1,119 @@
 import axios from 'axios';
 
-// Axios 인스턴스 생성
+const fallbackRestaurants = [
+  {
+    id: 1,
+    name: 'Songlim Restaurant',
+    category: 'Korean food',
+    location: 'Gyeonggi-do Suwon-si Yeongtong-gu World Cup-ro 193beon-gil 21 (Namcheon-dong)',
+    priceRange: 'KRW 7,000-13,000',
+    rating: 4.99,
+    description: 'Beloved spot for comforting Korean dishes near campus.',
+    recommendedMenu: [
+      'Soft tofu stew',
+      'Kimchi stew',
+      'Bulgogi',
+      'Spicy pork stir-fry'
+    ],
+    likes: 0,
+    image: 'https://mblogthumb-phinf.pstatic.net/MjAyMjA2MTJfODEg/MDAxNjU0OTYzNTM3MjE1.1BfmrmOsz_B6DBHAnhQSs6qfNIDnssofR-DrzMfigIIg.JHHDheG6ifJjtfKUqLss_mLXWFE9fNJ5BmepNUVXSOog.PNG.cary63/image.png?type=w966'
+  },
+  {
+    id: 2,
+    name: 'Special Tteokbokki',
+    category: 'Snacks',
+    location: '42 Gwanak-ro, Yeongtong-gu, Suwon-si',
+    priceRange: 'KRW 7,000-10,000',
+    rating: 4.92,
+    description: 'Crispy fritters and spicy tteokbokki that locals love.',
+    recommendedMenu: [
+      'Tteokbokki',
+      'Fried seaweed roll',
+      'Fish cake soup',
+      'Fried dumplings'
+    ],
+    likes: 0,
+    image: 'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyNTA4MTJfMjcg%2FMDAxNzU0OTQ5ODk1Mjg0.GR6i3mNpJJXyqQrozGEJ65InCDBGlEmxc0aCeVHncJgg.sduDPX67J8hhoGxq4vLohpS4dXk1w-706dQLPfVs1iwg.JPEG%2Foutput%25A3%25DF1564208956.jpg'
+  },
+  {
+    id: 3,
+    name: 'SOGO',
+    category: 'Japanese food',
+    location: '7 World Cup-ro 193beon-gil, Yeongtong-gu, Suwon-si',
+    priceRange: 'KRW 10,000-16,000',
+    rating: 4.89,
+    description: 'Casual Japanese restaurant with generous portions.',
+    recommendedMenu: [
+      'Cold soba set',
+      'Kimchi pork cutlet rice bowl',
+      'Cordon bleu'
+    ],
+    likes: 0,
+    image: 'https://search.pstatic.net/common/?src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20190707_63%2F1562462598960nPDMy_JPEG%2FW7iKQEhTMzCF3flC1t0pzgzF.jpeg.jpg'
+  }
+];
+
+const DEFAULT_BASE_URL = 'https://pwd-week4-<username>.onrender.com';
+const rawBaseUrl = import.meta.env?.VITE_API_BASE_URL || DEFAULT_BASE_URL;
+const API_BASE_URL = rawBaseUrl.endsWith('/') ? rawBaseUrl.slice(0, -1) : rawBaseUrl;
+
 const api = axios.create({
-  baseURL: 'https://jsonplaceholder.typicode.com', // 실습용 가짜 API
+  baseURL: API_BASE_URL,
   timeout: 10000,
 });
 
-// 요청 인터셉터
 api.interceptors.request.use(
   (config) => {
-    console.log('API 요청:', config.url);
+    console.log('API request:', config.method?.toUpperCase(), config.url);
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
-// 응답 인터셉터
 api.interceptors.response.use(
-  (response) => {
-    return response;
-  },
+  (response) => response,
   (error) => {
-    console.error('API 에러:', error);
+    console.error('API error:', error);
     return Promise.reject(error);
   }
 );
 
-// API 함수들
 export const restaurantAPI = {
-  // 맛집 목록 가져오기 (가짜 데이터)
   getRestaurants: async () => {
-    // 실제로는 백엔드 API를 호출하지만, 실습용으로 가짜 데이터 반환
-    return {
-      data: [
-        {
-          id: 1,
-          name: "송림식당",
-          category: "한식",
-          location: "경기 수원시 영통구 월드컵로193번길 21 원천동",
-          priceRange: "7,000-13,000원",
-          rating: 4.99,
-          description: "맛있는 한식 맛집입니다.",
-          recommendedMenu: ["순두부", "김치찌개","소불고기", "제육볶음"],
-          likes: 0,
-          image: "https://mblogthumb-phinf.pstatic.net/MjAyMjA2MTJfODEg/MDAxNjU0OTYzNTM3MjE1.1BfmrmOsz_B6DBHAnhQSs6qfNIDnssofR-DrzMfigIIg.JHHDheG6ifJjtfKUqLss_mLXWFE9fNJ5BmepNUVXSOog.PNG.cary63/image.png?type=w966"
-        },
-        {
-          id: 2,
-          name: "별미떡볶이",
-          category: "분식",
-          location: "경기 수원시 영통구 아주로 42 아카데미빌딩",
-          priceRange: "7,000-10,000원",
-          rating: 4.98,
-          description: "바삭한 튀김과 함께하는 행복한 한입",
-          recommendedMenu: ["떡볶이", "튀김", "순대", "어묵"],
-          likes: 0,
-          image: "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyNTA4MTJfMjcg%2FMDAxNzU0OTQ5ODk1Mjg0.GR6i3mNpJJXyqQrozGEJ65InCDBGlEmxc0aCeVHncJgg.sduDPX67J8hhoGxq4vLohpS4dXk1w-706dQLPfVs1iwg.JPEG%2Foutput%25A3%25DF1564208956.jpg"
-        },
-        {
-          id: 3,
-          name: "Sogo",
-          category: "일식",
-          location: "경기 수원시 영통구 월드컵로193번길 7",
-          priceRange: "10,000-16,000원",
-          rating: 4.89,
-          description: "일식 맛집, 구 허수아비,",
-          recommendedMenu: ["냉모밀", "김치돈까스나베", "코돈부르"],
-          likes: 0,
-          image: "https://search.pstatic.net/common/?src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20190707_63%2F1562462598960nPDMy_JPEG%2FW7iKQEhTMzCF3flC1t0pzgzF.jpeg.jpg"
-        }
-      ]
-    };
+    try {
+      const response = await api.get('/api/restaurants');
+      return response.data;
+    } catch (error) {
+      console.warn('Using local fallback restaurant list', error);
+      return { data: fallbackRestaurants };
+    }
   },
 
-  // 맛집 상세 정보 가져오기
   getRestaurantById: async (id) => {
-    const restaurants = await restaurantAPI.getRestaurants();
-    const restaurant = restaurants.data.find(r => r.id === parseInt(id));
-    return { data: restaurant };
+    try {
+      const response = await api.get(`/api/restaurants/${id}`);
+      return response.data;
+    } catch (error) {
+      console.warn(`Using local fallback for restaurant ${id}`, error);
+      const restaurant = fallbackRestaurants.find(
+        (item) => item.id === Number(id)
+      );
+      return { data: restaurant ?? null };
+    }
   },
 
-  // 인기 맛집 가져오기
   getPopularRestaurants: async () => {
-    const restaurants = await restaurantAPI.getRestaurants();
-    const sorted = [...restaurants.data].sort((a, b) => b.rating - a.rating);
-    return { data: sorted.slice(0, 5) };
-  }
+    try {
+      const response = await api.get('/api/restaurants/popular');
+      return response.data;
+    } catch (error) {
+      console.warn('Using local fallback popular restaurants', error);
+      const popular = [...fallbackRestaurants]
+        .sort((a, b) => b.rating - a.rating)
+        .slice(0, 5);
+      return { data: popular };
+    }
+  },
 };
 
 export default api;
