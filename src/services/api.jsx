@@ -53,7 +53,7 @@ const fallbackRestaurants = [
   }
 ];
 
-const DEFAULT_BASE_URL = 'https://pwd-week4-<username>.onrender.com';
+const DEFAULT_BASE_URL = 'https://pwd-week4-alpha7179.onrender.com';
 const rawBaseUrl = import.meta.env?.VITE_API_BASE_URL || DEFAULT_BASE_URL;
 const API_BASE_URL = rawBaseUrl.endsWith('/') ? rawBaseUrl.slice(0, -1) : rawBaseUrl;
 
