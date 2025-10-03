@@ -1,6 +1,4 @@
 //src/pages/AdminPage.jsx
-console.log('--- AdminPage.jsx 파일이 로드되었습니다 ---');
-
 import React, { useMemo, useState } from 'react';
 import styled from '@emotion/styled';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';

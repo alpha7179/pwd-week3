@@ -1,7 +1,5 @@
 //src/services/api.jsx
 
-console.log('!!! src/services/api.jsx 파일이 로드되었습니다 !!!');
-
 import axios from 'axios';
 
 const DEFAULT_BASE_URL = 'http://localhost:3000';
