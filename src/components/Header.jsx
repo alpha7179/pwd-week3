@@ -54,7 +54,7 @@ function Header() {
           <FaList /> List
         </NavLink>
         <NavLink to="/popular" className={isActive('/popular')}>
-          <FaFire /> Popular Top 3
+          <FaFire /> Popular Top 5
         </NavLink>
         <NavLink to="/submit" className={isActive('/submit')}>
           <FaPlus /> Submit New restaurant

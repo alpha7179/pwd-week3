@@ -118,6 +118,19 @@ const SuccessMessage = styled.div`
   h3 {
     color: #4caf50;
     margin-bottom: 1rem;
+    
+  button {
+    margin-top: 1.5rem; /* 버튼 위쪽에 여백 추가 */
+    padding: 0.6rem 1.2rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: #f0f0f0;
+    cursor: pointer;
+    font-size: 0.95rem;
+
+    &:hover {
+      background: #e0e0e0;
+    }
   }
 `;
 
