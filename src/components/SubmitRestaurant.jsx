@@ -4,6 +4,8 @@ import { useForm } from 'react-hook-form';
 import styled from '@emotion/styled';
 import { toast } from 'react-toastify';
 import { FaCheckCircle } from 'react-icons/fa';
+import { useMutation } from '@tanstack/react-query';
+import { submissionAPI } from '../services/api';
 
 const FormContainer = styled.div`
   background: white;
@@ -120,30 +122,20 @@ const SuccessMessage = styled.div`
 `;
 
 function SubmitRestaurant() {
-  const [submitted, setSubmitted] = useState(false);
   const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm();
-
-  const onSubmit = async (data) => {
-    try {
-      // Netlify Forms로 제출
-      const response = await fetch("/", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams({
-          "form-name": "restaurant-submit",
-          ...data
-        }).toString()
-      });
-      
-      if (response.ok) {
-        setSubmitted(true);
-        toast.success('맛집이 성공적으로 제보되었습니다! 🎉');
-        reset();
-        setTimeout(() => setSubmitted(false), 5000);
-      }
-    } catch (error) {
+  const { mutate, isPending, isSuccess, reset: resetMutation } = useMutation({
+    mutationFn: submissionAPI.createSubmission,
+    onSuccess: () => {
+      toast.success('맛집이 성공적으로 제보되었습니다! 🎉');
+      reset(); // 폼 리셋
+    },
+    onError: () => {
       toast.error('제출 중 오류가 발생했습니다.');
     }
+  });
+
+  const onSubmit = (data) => {
+    mutate(data);
   };
 
   if (submitted) {
