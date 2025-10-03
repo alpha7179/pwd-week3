@@ -33,7 +33,6 @@ const queryClient = new QueryClient({
 });
 
 function App() {
-  console.log('Vercel 환경 변수:', import.meta.env.VITE_API_BASE_URL);
   return (
     <QueryClientProvider client={queryClient}>
       <HashRouter>
