@@ -138,7 +138,7 @@ function SubmitRestaurant() {
     mutate(data);
   };
 
-  if (submitted) {
+  if (isSuccess) {
     return (
       <FormContainer>
         <SuccessMessage>
