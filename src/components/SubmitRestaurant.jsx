@@ -145,7 +145,7 @@ function SubmitRestaurant() {
           <FaCheckCircle />
           <h3>제보 감사합니다!</h3>
           <p>여러분의 제보로 캠퍼스 푸드맵이 더욱 풍성해집니다.</p>
-          <button onClick={() => setSubmitted(false)}>
+          <button onClick={() => resetMutation()}>
             다른 맛집 제보하기
           </button>
         </SuccessMessage>
